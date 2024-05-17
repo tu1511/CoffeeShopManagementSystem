@@ -33,7 +33,6 @@ public class ForgotPasswordFrame extends javax.swing.JFrame {
         jTextField3 = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -42,6 +41,7 @@ public class ForgotPasswordFrame extends javax.swing.JFrame {
         jTextField7 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
+        jPasswordField1 = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -84,9 +84,6 @@ public class ForgotPasswordFrame extends javax.swing.JFrame {
         jLabel8.setText("New Password:");
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 320, -1, -1));
 
-        jTextField6.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
-        jPanel1.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, 290, 38));
-
         jButton4.setBackground(new java.awt.Color(204, 173, 152));
         jButton4.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
         jButton4.setText("Back");
@@ -116,6 +113,9 @@ public class ForgotPasswordFrame extends javax.swing.JFrame {
 
         jTextField4.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jPanel1.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 120, 290, 38));
+
+        jPasswordField1.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        jPanel1.add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, 290, 39));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -187,9 +187,9 @@ public class ForgotPasswordFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     // End of variables declaration//GEN-END:variables
 }
