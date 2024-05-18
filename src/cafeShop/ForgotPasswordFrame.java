@@ -130,6 +130,11 @@ public class ForgotPasswordFrame extends javax.swing.JFrame {
         jButton5.setBackground(new java.awt.Color(204, 173, 152));
         jButton5.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
         jButton5.setText("Save");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 400, 140, 40));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search.png"))); // NOI18N
@@ -254,7 +259,39 @@ public class ForgotPasswordFrame extends javax.swing.JFrame {
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
         // TODO add your handling code here:
+        if(jTextField4.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Username is required", "Warning",2);
+        } else {
+            if(dao.getSecurity(jTextField4.getText())){
+                jTextField3.setBackground(edit);
+                jTextField7.setBackground(edit);
+                jPasswordField1.setBackground(edit);
+                jPasswordField1.setEnabled(true);
+                jTextField3.setEnabled(true);
+                jTextField7.setEnabled(true);
+                jButton5.setEnabled(true);
+            } else {
+                JOptionPane.showMessageDialog(this, "Username doesn't exist!", "Warning",2);
+            }
+        }
     }//GEN-LAST:event_jLabel2MouseClicked
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        if(isEmpty()) {
+            String username = jTextField4.getText();
+            String ans = jTextField7.getText();
+            
+            if(dao.getAnswer(username, ans)) {
+                String password = String.valueOf(jPasswordField1.getPassword());
+                dao.setPassword(username, password);
+                JOptionPane.showMessageDialog(this, "Password updated!");
+                new LoginFrame().setVisible(true);
+                setVisible(false);
+            } else {
+                JOptionPane.showMessageDialog(this, "Security answer didn't match!", "Warning",2);
+            }
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     public boolean isEmpty() {
         if(jTextField7.getText().isEmpty()) {
@@ -317,7 +354,7 @@ public class ForgotPasswordFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField3;
+    public static javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField7;
     // End of variables declaration//GEN-END:variables

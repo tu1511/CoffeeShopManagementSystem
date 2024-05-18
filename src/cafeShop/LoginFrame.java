@@ -101,6 +101,11 @@ public class LoginFrame extends javax.swing.JFrame {
         jButton5.setBackground(new java.awt.Color(204, 173, 152));
         jButton5.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
         jButton5.setText("Login");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, 140, 40));
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/visible.png"))); // NOI18N
@@ -234,6 +239,26 @@ public class LoginFrame extends javax.swing.JFrame {
         new ForgotPasswordFrame().setVisible(true);
         setVisible(false);
     }//GEN-LAST:event_jLabel2MouseClicked
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        if(isEmpty()) {
+            String username = jTextField4.getText().trim();
+            String password = String.valueOf(jPasswordField1.getPassword());
+            if(dao.getMaxRowAdminTable() != 1) {
+                if(dao.login(username, password)) {
+                    JOptionPane.showMessageDialog(this, "Login Success");
+                    new HomeFrame().setVisible(true);
+                     setVisible(false);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Incorrect username or password!", "Login Failed",2);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "No admin in the admin table!\nYou need to sign up first", "Warning",2);
+                new SignUpFrame().setVisible(true);
+                setVisible(false);
+            }
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     public boolean isEmpty() {
         if(jTextField4.getText().isEmpty()) {
