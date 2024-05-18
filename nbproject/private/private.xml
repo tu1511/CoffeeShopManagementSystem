@@ -3,10 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Java/CafeShop/src/cafeShop/AllProductsFrame.java</file>
-            <file>file:/D:/Java/CafeShop/src/cafeShop/HomeFrame.java</file>
-            <file>file:/D:/Java/CafeShop/src/cafeShop/ManageProductsFrame.java</file>
-            <file>file:/D:/Java/CafeShop/src/cafeShop/AddProductFrame.java</file>
+            <file>file:/D:/Java/CafeShop/src/model/MyConnection.java</file>
+            <file>file:/D:/Java/CafeShop/src/cafeShop/LoginFrame.java</file>
+            <file>file:/D:/Java/CafeShop/src/cafeShop/SignUpFrame.java</file>
+            <file>file:/D:/Java/CafeShop/src/cafeShop/ForgotPasswordFrame.java</file>
+            <file>file:/D:/Java/CafeShop/src/model/AdminDAO.java</file>
+            <file>file:/D:/Java/CafeShop/src/model/Admin.java</file>
         </group>
     </open-files>
 </project-private>

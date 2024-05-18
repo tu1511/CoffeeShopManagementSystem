@@ -4,7 +4,10 @@
  */
 package cafeShop;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import model.AdminDAO;
 
 /**
  *
@@ -13,7 +16,7 @@ import javax.swing.JOptionPane;
 public class LoginFrame extends javax.swing.JFrame {
 
     int xx, xy;
-    
+    AdminDAO dao = new AdminDAO();
     public LoginFrame() {
         initComponents();
     }
@@ -44,6 +47,11 @@ public class LoginFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(158, 111, 78));
         jPanel1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -87,13 +95,13 @@ public class LoginFrame extends javax.swing.JFrame {
 
         jButton4.setBackground(new java.awt.Color(204, 173, 152));
         jButton4.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
-        jButton4.setText("Back");
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 260, 101, -1));
+        jButton4.setText("Cancel");
+        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(201, 250, 130, 40));
 
         jButton5.setBackground(new java.awt.Color(204, 173, 152));
         jButton5.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
         jButton5.setText("Login");
-        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 260, 101, -1));
+        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, 140, 40));
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/visible.png"))); // NOI18N
         jLabel9.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -122,6 +130,11 @@ public class LoginFrame extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Forgot Password");
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+        });
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 320, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
@@ -132,6 +145,11 @@ public class LoginFrame extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Sign Up");
+        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel7MouseClicked(evt);
+            }
+        });
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 300, -1, -1));
 
         jPasswordField1.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
@@ -192,6 +210,44 @@ public class LoginFrame extends javax.swing.JFrame {
         this.setLocation(x - xx, y -xy);
     }//GEN-LAST:event_jPanel1MouseDragged
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        for (double i = 0.1; i < 1.0; i += 0.1) {
+            String s = "" + i;
+            float f = Float.parseFloat(s);
+            this.setOpacity(f);
+
+            try {
+                Thread.sleep(40);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(SignUpFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_formWindowOpened
+
+    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+        new SignUpFrame().setVisible(true);
+        setVisible(false);
+    }//GEN-LAST:event_jLabel7MouseClicked
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        // TODO add your handling code here:
+        new ForgotPasswordFrame().setVisible(true);
+        setVisible(false);
+    }//GEN-LAST:event_jLabel2MouseClicked
+
+    public boolean isEmpty() {
+        if(jTextField4.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Username is required", "Warning",2);
+            return false;
+        }
+        if(String.valueOf(jPasswordField1.getPassword()).isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Password is required", "Warning",2);
+            return false;
+        }
+    
+        return true;
+    }
+    
     /**
      * @param args the command line arguments
      */

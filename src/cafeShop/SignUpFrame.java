@@ -4,7 +4,11 @@
  */
 package cafeShop;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import model.Admin;
+import model.AdminDAO;
 
 /**
  *
@@ -15,10 +19,12 @@ public class SignUpFrame extends javax.swing.JFrame {
     /**
      * Creates new form SignUpFrame
      */
+    AdminDAO dao = new AdminDAO();
     int xx, xy;
     
     public SignUpFrame() {
         initComponents();
+        jTextField2.setText(String.valueOf(dao.getMaxRowAdminTable()));
     }
 
     /**
@@ -50,6 +56,11 @@ public class SignUpFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(158, 111, 78));
         jPanel1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -128,12 +139,22 @@ public class SignUpFrame extends javax.swing.JFrame {
         jButton4.setBackground(new java.awt.Color(204, 173, 152));
         jButton4.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
         jButton4.setText("Back");
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 480, 101, -1));
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(201, 470, 130, 40));
 
         jButton5.setBackground(new java.awt.Color(204, 173, 152));
         jButton5.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
         jButton5.setText("Save");
-        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 480, 101, -1));
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 470, 140, 40));
 
         jPasswordField1.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jPanel1.add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(39, 265, 290, 39));
@@ -208,6 +229,72 @@ public class SignUpFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTextField3KeyTyped
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        for (double i = 0.1; i < 1.0; i += 0.1) {
+            String s = "" + i;
+            float f = Float.parseFloat(s);
+            this.setOpacity(f);
+
+            try {
+                Thread.sleep(40);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(SignUpFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_formWindowOpened
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        if(isEmpty()) {
+            String username = jTextField3.getText().trim();
+            if(! dao.isAdminNameExist(username)) {
+                Admin admin = new Admin();
+                admin.setId(dao.getMaxRowAdminTable());
+                admin.setUsernameString(username);
+                admin.setPasswordString(String.valueOf(jPasswordField1.getPassword()));
+                admin.setsQuesString(jComboBox1.getSelectedItem().toString());
+                admin.setAnsString(jTextField6.getText().trim());
+                
+                if(dao.insert(admin)) {
+                    JOptionPane.showMessageDialog(this, "Admin Successfull Created...");
+                    new LoginFrame().setVisible(true);
+                    setVisible(false);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Failed!!!","Warning", 2);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Username already exists...","Warning", 2);
+            }
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        new LoginFrame().setVisible(true);
+        setVisible(false);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    
+    
+    public boolean isEmpty() {
+        if(jTextField3.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Username is required", "Warning",2);
+            return false;
+        }
+        if(String.valueOf(jPasswordField1.getPassword()).isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Password is required", "Warning",2);
+            return false;
+        }
+        if(jComboBox1.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(this, "Security questio is required", "Warning",2);
+            return false;
+        }
+        if(jTextField6.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Answer is required", "Warning",2);
+            return false;
+        }
+        return true;
+    }
+    
     /**
      * @param args the command line arguments
      */
