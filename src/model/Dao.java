@@ -84,4 +84,21 @@ public class Dao {
             return false;
         }
     }
+    
+    public int getMaxRowOrderTable() {
+        int row = 0;
+        
+        try {
+            st = con.createStatement();
+            rs = st.executeQuery("Select max(cid) from cart");
+            
+            while(rs.next()) {
+                row = rs.getInt(1);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(Dao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return row + 1;
+    }
 }
