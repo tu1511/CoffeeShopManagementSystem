@@ -211,7 +211,7 @@ public class AddProductFrame extends javax.swing.JFrame {
             try {
                 Thread.sleep(40);
             } catch (InterruptedException ex) {
-                Logger.getLogger(SignUpFrame.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AddProductFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_formWindowOpened
@@ -230,15 +230,15 @@ public class AddProductFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             Product product = new Product();
-            product.setName(jTextField1.getText().trim());
-            product.setPrice(Double.parseDouble(jTextField2.getText().trim()));
+            product.setName(jTextField2.getText().trim());
+            product.setPrice(Double.parseDouble(jTextField1.getText().trim()));
             product.setImage(Files.readAllBytes(this.file.toPath()));
             
             if(dao.insertProduct(product)) {
                 JOptionPane.showMessageDialog(null, "Product added successfully...");
                 clear();
             } else {
-                 JOptionPane.showMessageDialog(null, "Failed!!!", "Warning", 2);
+                JOptionPane.showMessageDialog(null, "Failed!!!", "Warning", 2);
             }
         } catch (Exception e) {
              JOptionPane.showMessageDialog(null, ""+e, "Warning", 2);

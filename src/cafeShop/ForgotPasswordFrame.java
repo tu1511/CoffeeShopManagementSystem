@@ -239,7 +239,7 @@ public class ForgotPasswordFrame extends javax.swing.JFrame {
             try {
                 Thread.sleep(40);
             } catch (InterruptedException ex) {
-                Logger.getLogger(SignUpFrame.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ForgotPasswordFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_formWindowOpened
