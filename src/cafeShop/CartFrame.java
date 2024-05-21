@@ -4,6 +4,14 @@
  */
 package cafeShop;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+import model.Calculate;
+import model.Dao;
+
 /**
  *
  * @author LENOVO
@@ -13,8 +21,22 @@ public class CartFrame extends javax.swing.JFrame {
     /**
      * Creates new form CartFrame
      */
+    int xx, xy, rowIndex;
+    Dao dao = new Dao();
+    DefaultTableModel model;
+    private double total = 0.0; 
+    LocalDate currentDate = LocalDate.now();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-dd");
+    Calculate cal = new Calculate();
+    
     public CartFrame() {
         initComponents();
+        init();
+    }
+    
+    private void init() {
+        jTextField2.setText(String.valueOf(dao.getMaxRowPaymentTable()));
+        jTextField1.setText(currentDate.format(formatter));
     }
 
     /**
@@ -50,8 +72,23 @@ public class CartFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel2.setBackground(new java.awt.Color(158, 111, 78));
+        jPanel2.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                jPanel2MouseDragged(evt);
+            }
+        });
+        jPanel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jPanel2MousePressed(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 35)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
@@ -78,24 +115,32 @@ public class CartFrame extends javax.swing.JFrame {
         jLabel2.setText("Payment Date:");
 
         jTextField1.setBackground(new java.awt.Color(204, 204, 204));
+        jTextField1.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Payment ID:");
 
         jTextField2.setBackground(new java.awt.Color(204, 204, 204));
+        jTextField2.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        jTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Tax ($):");
 
         jTextField3.setBackground(new java.awt.Color(204, 204, 204));
+        jTextField3.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        jTextField3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jButton3.setBackground(new java.awt.Color(204, 173, 152));
         jButton3.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
         jButton3.setText("Payment");
 
         jTextField4.setBackground(new java.awt.Color(204, 204, 204));
+        jTextField4.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        jTextField4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
@@ -106,10 +151,18 @@ public class CartFrame extends javax.swing.JFrame {
         jLabel7.setText("Total ($):");
 
         jTextField5.setBackground(new java.awt.Color(204, 204, 204));
+        jTextField5.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        jTextField5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        jTextField7.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        jTextField7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Customer Name:");
+
+        jTextField8.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        jTextField8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jLabel10.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
@@ -120,6 +173,8 @@ public class CartFrame extends javax.swing.JFrame {
         jLabel11.setText("Change ($):");
 
         jTextField9.setBackground(new java.awt.Color(204, 204, 204));
+        jTextField9.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        jTextField9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -213,7 +268,7 @@ public class CartFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -223,6 +278,34 @@ public class CartFrame extends javax.swing.JFrame {
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
         setVisible(false);
     }//GEN-LAST:event_jLabel5MouseClicked
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        for (double i = 0.1; i < 1.0; i += 0.1) {
+            String s = "" + i;
+            float f = Float.parseFloat(s);
+            this.setOpacity(f);
+
+            try {
+                Thread.sleep(40);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(CartFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_formWindowOpened
+
+    private void jPanel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MousePressed
+        // TODO add your handling code here:
+        xx = evt.getX();
+        xy = evt.getY();
+    }//GEN-LAST:event_jPanel2MousePressed
+
+    private void jPanel2MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseDragged
+        // TODO add your handling code here:
+        int x = evt.getXOnScreen();
+        int y = evt.getYOnScreen();
+        this.setLocation(x - xx, y -xy);
+    }//GEN-LAST:event_jPanel2MouseDragged
 
     /**
      * @param args the command line arguments

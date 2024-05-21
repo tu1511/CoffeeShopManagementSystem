@@ -7,6 +7,7 @@ package model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -91,6 +92,56 @@ public class Dao {
         try {
             st = con.createStatement();
             rs = st.executeQuery("Select max(cid) from cart");
+            
+            while(rs.next()) {
+                row = rs.getInt(1);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(Dao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return row + 1;
+    }
+    
+    public boolean isProductExist(int cid, int pid) {
+        try {
+            ps = con.prepareStatement("select * from cart where cid = ? and pid = ?");
+            ps.setInt(1, cid);
+            ps.setInt(2, pid);
+            
+            rs = ps.executeQuery();
+            if(rs.next()) {
+                return true;
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(Dao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    
+    public boolean insertCart(Cart cart) {
+        String sql = "insert into cart (cid, pid, pName, qty, price, total) values (?,?,?,?,?,?)";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, cart.getId());
+            ps.setInt(2, cart.getPid());
+            ps.setString(3, cart.getpName());
+            ps.setInt(4, cart.getQty());
+            ps.setDouble(5, cart.getPrice());
+            ps.setDouble(6, cart.getTotal());
+
+            return ps.executeUpdate() > 0;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+    
+    public int getMaxRowPaymentTable() {
+        int row = 0;
+        
+        try {
+            st = con.createStatement();
+            rs = st.executeQuery("Select max(pid) from payment");
             
             while(rs.next()) {
                 row = rs.getInt(1);

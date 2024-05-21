@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import model.Cart;
 import model.Dao;
 
 /**
@@ -149,6 +150,11 @@ public class OrderFrame extends javax.swing.JFrame {
         jButton3.setBackground(new java.awt.Color(204, 173, 152));
         jButton3.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
         jButton3.setText("Cart");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setBackground(new java.awt.Color(204, 173, 152));
         jButton4.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
@@ -280,10 +286,52 @@ public class OrderFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        if(jTextField1.getText().isEmpty()) {
+        if (jTextField1.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please select a product", "Warning", 2);
+        } else if (jTextField3.getText().isEmpty() || jTextField3.getText().equals("0")) {
+            JOptionPane.showMessageDialog(this, "Product quantity is required", "Warning", 2);
+        } else {
+            try {
+                model = (DefaultTableModel) jTable1.getModel();
+                int cid = Integer.parseInt(jTextField2.getText().trim());
+                int qty = Integer.parseInt(jTextField3.getText().trim());
+                int proId = Integer.parseInt(model.getValueAt(rowIndex, 0).toString());
+                String pName = jTextField1.getText().trim();
+
+                price = Double.parseDouble(model.getValueAt(rowIndex, 2).toString());
+
+                if (!dao.isProductExist(cid, proId)) {
+                    Cart cart = new Cart();
+                    cart.setId(cid);
+                    cart.setPid(proId);
+                    cart.setpName(pName);
+                    cart.setQty(qty);
+                    cart.setPrice(price);
+                    cart.setTotal(price * (double) qty);
+
+                    total += price * (double) qty;
+                    jLabel1.setText(String.format("Total ($): " + "%.2f", total));
+                    if (dao.insertCart(cart)) {
+                        JOptionPane.showMessageDialog(this, "Product added");
+                        clear();
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "This product already exists!", "Warning", 2);
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "" + e, "Warning", 2);
+            }
         }
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        if (total != 0.0) {
+            new CartFrame().setVisible(true);
+            setVisible(false);
+        } else {
+            JOptionPane.showMessageDialog(this, "You haven't purchased any product!", "Warning", 2);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     private class ImageRenderer extends DefaultTableCellRenderer {
 

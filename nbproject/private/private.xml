@@ -5,9 +5,9 @@
         <group>
             <file>file:/D:/Java/CafeShop/src/model/Dao.java</file>
             <file>file:/D:/Java/CafeShop/src/cafeShop/OrderFrame.java</file>
-            <file>file:/D:/Java/CafeShop/src/model/AdminDAO.java</file>
+            <file>file:/D:/Java/CafeShop/src/cafeShop/CartFrame.java</file>
             <file>file:/D:/Java/CafeShop/src/model/Cart.java</file>
-            <file>file:/D:/Java/CafeShop/src/cafeShop/ManageProductsFrame.java</file>
+            <file>file:/D:/Java/CafeShop/src/model/Calculate.java</file>
         </group>
     </open-files>
 </project-private>
