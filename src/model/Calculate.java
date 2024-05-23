@@ -10,22 +10,22 @@ package model;
  */
 public class Calculate {
     private double tax;
-    private double total;
+    private double subTotal;
 
     public double getTax() {
-        return tax;
-    }
-
-    public void setTax(double tax) {
-        this.tax = tax;
+        return calTax(subTotal);
     }
 
     public double getTotal() {
-        return total;
+        return subTotal + getTax();
+    }
+    
+    public double getSubTotal() {
+        return subTotal;
     }
 
-    public void setTotal(double total) {
-        this.total = total;
+    public void setSubTotal(double subTotal) {
+        this.subTotal = subTotal;
     }
     
     private double calTax(double t) {

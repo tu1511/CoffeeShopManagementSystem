@@ -4,6 +4,12 @@
  */
 package cafeShop;
 
+import java.awt.Color;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+import model.Dao;
+
 /**
  *
  * @author LENOVO
@@ -13,10 +19,26 @@ public class ViewOrdersFrame extends javax.swing.JFrame {
     /**
      * Creates new form ViewOrdersFrame
      */
+    int xx, xy, rowIndex;
+    Dao dao = new Dao();
+    DefaultTableModel model;
+    
     public ViewOrdersFrame() {
         initComponents();
+        tableProduct();
     }
 
+    private void tableProduct() {
+        dao.getPaymentDetails(jTable1);
+        model = (DefaultTableModel) jTable1.getModel();
+        jTable1.setRowHeight(40);
+        jTable1.setShowGrid(true);
+        jTable1.setGridColor(Color.black);
+        jTable1.setBackground(Color.white);
+        jTable1.setSelectionBackground(Color.gray);
+        jTable1.setModel(model);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -33,8 +55,23 @@ public class ViewOrdersFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(158, 111, 78));
+        jPanel1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                jPanel1MouseDragged(evt);
+            }
+        });
+        jPanel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jPanel1MousePressed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -102,41 +139,32 @@ public class ViewOrdersFrame extends javax.swing.JFrame {
         setVisible(false);
     }//GEN-LAST:event_jLabel5MouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+    private void jPanel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MousePressed
+        xx = evt.getX();
+        xy = evt.getY();
+    }//GEN-LAST:event_jPanel1MousePressed
+
+    private void jPanel1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseDragged
+        int x = evt.getXOnScreen();
+        int y = evt.getYOnScreen();
+        this.setLocation(x - xx, y -xy);
+    }//GEN-LAST:event_jPanel1MouseDragged
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        for (double i = 0.1; i < 1.0; i += 0.1) {
+            String s = "" + i;
+            float f = Float.parseFloat(s);
+            this.setOpacity(f);
+
+            try {
+                Thread.sleep(40);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ViewOrdersFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ViewOrdersFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ViewOrdersFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ViewOrdersFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ViewOrdersFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
+    }//GEN-LAST:event_formWindowOpened
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ViewOrdersFrame().setVisible(true);
-            }
-        });
-    }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;

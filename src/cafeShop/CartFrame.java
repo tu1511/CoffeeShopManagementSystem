@@ -4,13 +4,19 @@
  */
 package cafeShop;
 
+import java.awt.Color;
+import java.awt.print.PrinterException;
+import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import model.Calculate;
 import model.Dao;
+import model.Payment;
 
 /**
  *
@@ -35,8 +41,24 @@ public class CartFrame extends javax.swing.JFrame {
     }
     
     private void init() {
-        jTextField2.setText(String.valueOf(dao.getMaxRowPaymentTable()));
+        jTextField2.setText(String.valueOf(dao.getMaxRowAPaymentTable()));
         jTextField1.setText(currentDate.format(formatter));
+        jTextField4.setText(String.valueOf(dao.subTotal()));
+        cal.setSubTotal(Double.parseDouble(jTextField4.getText()));
+        jTextField3.setText(String.valueOf(cal.getTax()));
+        jTextField5.setText(String.valueOf(cal.getTotal()));
+        tableProduct();
+    }
+    
+    private void tableProduct() {
+        dao.getProductsFromCart(jTable1);
+        model = (DefaultTableModel) jTable1.getModel();
+        jTable1.setRowHeight(40);
+        jTable1.setShowGrid(true);
+        jTable1.setGridColor(Color.black);
+        jTable1.setBackground(Color.white);
+        jTable1.setSelectionBackground(Color.gray);
+        jTable1.setModel(model);
     }
 
     /**
@@ -130,6 +152,7 @@ public class CartFrame extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Tax ($):");
 
+        jTextField3.setEditable(false);
         jTextField3.setBackground(new java.awt.Color(204, 204, 204));
         jTextField3.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jTextField3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -137,7 +160,13 @@ public class CartFrame extends javax.swing.JFrame {
         jButton3.setBackground(new java.awt.Color(204, 173, 152));
         jButton3.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
         jButton3.setText("Payment");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
+        jTextField4.setEditable(false);
         jTextField4.setBackground(new java.awt.Color(204, 204, 204));
         jTextField4.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jTextField4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -150,6 +179,7 @@ public class CartFrame extends javax.swing.JFrame {
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Total ($):");
 
+        jTextField5.setEditable(false);
         jTextField5.setBackground(new java.awt.Color(204, 204, 204));
         jTextField5.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jTextField5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -163,6 +193,11 @@ public class CartFrame extends javax.swing.JFrame {
 
         jTextField8.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jTextField8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField8.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField8KeyReleased(evt);
+            }
+        });
 
         jLabel10.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
@@ -175,30 +210,39 @@ public class CartFrame extends javax.swing.JFrame {
         jTextField9.setBackground(new java.awt.Color(204, 204, 204));
         jTextField9.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jTextField9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField9.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField9KeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11)
-                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6)
+                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7)
+                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9)
+                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel10)
+                            .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel11)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 553, Short.MAX_VALUE)
@@ -251,11 +295,11 @@ public class CartFrame extends javax.swing.JFrame {
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 474, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
-                    .addComponent(jTextField9))
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -307,40 +351,89 @@ public class CartFrame extends javax.swing.JFrame {
         this.setLocation(x - xx, y -xy);
     }//GEN-LAST:event_jPanel2MouseDragged
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CartFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CartFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CartFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CartFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        model = (DefaultTableModel) jTable1.getModel();
+        
+        String proName = "";
+        String proId = "";
+        for (int i = 0; i < model.getRowCount(); i++) {
+            proId += model.getValueAt(i, 1).toString()+ ", ";
+            proName += model.getValueAt(i, 2).toString()+ ", ";
         }
-        //</editor-fold>
+        
+        int pid = dao.getMaxRowAPaymentTable() + 1;
+        String cName = jTextField7.getText().trim();
+        double t = Double.parseDouble(jTextField5.getText().trim());
+        
+        Payment payment = new Payment();
+        payment.setPid(pid);
+        payment.setcName(cName);
+        payment.setProId(proId);
+        payment.setProName(proName);
+        payment.setTotal(t);
+        payment.setDate(jTextField1.getText().trim());
+        if(check()) {
+           if(dao.insertPayment(payment)){
+               JOptionPane.showMessageDialog(this, "Payment added!");
+               int cid = Integer.parseInt(model.getValueAt(rowIndex,0).toString());
+               dao.deleteCart(cid);
+               
+               int x = JOptionPane.showConfirmDialog(this, "Do you want to print the receipt?", "Print", JOptionPane.YES_NO_OPTION, 0);
+               if (x == JOptionPane.YES_OPTION) {
+                   try {
+                       MessageFormat header = new MessageFormat("***Cow Cafe***" + "\nCustomer Name: " + cName + "  " + "\nTotal($): " + t);
+                       MessageFormat footer = new MessageFormat("Page{0, number, integer}");
+                       jTable1.print(JTable.PrintMode.FIT_WIDTH, header, footer);
+                       setVisible(false);
+                   } catch (PrinterException ex) {
+                       JOptionPane.showMessageDialog(null, ex.getMessage(), "Warning", 2);
+                   }
+               } else {
+                   setVisible(false);
+               }
+           } else {
+               JOptionPane.showMessageDialog(this, "Payment Failed!", "Warning", 2);
+           }
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CartFrame().setVisible(true);
-            }
-        });
+    private void jTextField9KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField9KeyReleased
+        
+    }//GEN-LAST:event_jTextField9KeyReleased
+
+    private void jTextField8KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField8KeyReleased
+        // TODO add your handling code here:
+        cash();
+    }//GEN-LAST:event_jTextField8KeyReleased
+
+    public void cash() {
+        try {
+            double cash = Double.parseDouble(jTextField8.getText().trim());
+            double total= Double.parseDouble(jTextField5.getText().trim());
+            double change = (cash -total);
+            jTextField9.setText(String.valueOf(change));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Not enough cash entered!", "Warning",2);
+        }
     }
+    
+    public boolean check () {
+        if(jTextField7.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Customer name is required!", "Warning",2);
+            return false;
+        }
+        if(jTextField8.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Cash is required!", "Warning",2);
+            return false;
+        }
+        double change = Double.parseDouble(jTextField9.getText().trim());
+        if(change < 0.0) {
+            JOptionPane.showMessageDialog(this, "Not enough cash entered!", "Warning",2);
+            return false;
+        }
+        return true;
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton3;

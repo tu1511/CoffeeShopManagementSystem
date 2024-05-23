@@ -4,6 +4,13 @@
  */
 package cafeShop;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.AdminDAO;
+import model.Dao;
+
 /**
  *
  * @author LENOVO
@@ -13,8 +20,25 @@ public class StatisticsFrame extends javax.swing.JFrame {
     /**
      * Creates new form StatisticsFrame
      */
+    LocalDate currentDate = LocalDate.now();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-dd");
+    int xx, xy;
+    Dao dao = new Dao();
+    AdminDAO adminDAO = new AdminDAO();
+    
+    String date = currentDate.format(formatter);
+    
     public StatisticsFrame() {
         initComponents();
+        init();
+    }
+    
+    public void init() {
+        int totalProducts = dao.totalProducts();
+        jLabel3.setText(String.valueOf(totalProducts));
+        jLabel4.setText(String.valueOf(dao.todayRevenue(date)));
+        jLabel2.setText(String.valueOf(dao.todayRevenue()));
+        jLabel6.setText(String.valueOf(adminDAO.getMaxRowAdminTable() - 1));
     }
 
     /**
@@ -44,8 +68,23 @@ public class StatisticsFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(158, 111, 78));
+        jPanel1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                jPanel1MouseDragged(evt);
+            }
+        });
+        jPanel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jPanel1MousePressed(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 35)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
@@ -232,40 +271,34 @@ public class StatisticsFrame extends javax.swing.JFrame {
         setVisible(false);
     }//GEN-LAST:event_jLabel5MouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(StatisticsFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(StatisticsFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(StatisticsFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(StatisticsFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void jPanel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MousePressed
+        // TODO add your handling code here:
+        xx = evt.getX();
+        xy = evt.getY();
+    }//GEN-LAST:event_jPanel1MousePressed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new StatisticsFrame().setVisible(true);
+    private void jPanel1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseDragged
+        // TODO add your handling code here:
+        int x = evt.getXOnScreen();
+        int y = evt.getYOnScreen();
+        this.setLocation(x - xx, y -xy);
+    }//GEN-LAST:event_jPanel1MouseDragged
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        for (double i = 0.1; i < 1.0; i += 0.1) {
+            String s = "" + i;
+            float f = Float.parseFloat(s);
+            this.setOpacity(f);
+
+            try {
+                Thread.sleep(40);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(StatisticsFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
-        });
-    }
+        }
+    }//GEN-LAST:event_formWindowOpened
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;

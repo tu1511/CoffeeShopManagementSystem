@@ -1,9 +1,15 @@
 package cafeShop;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import javax.swing.JOptionPane;
+
 public class HomeFrame extends javax.swing.JFrame {
 
     public HomeFrame() {
         initComponents();
+        setDateTime();
     }
 
     @SuppressWarnings("unchecked")
@@ -30,31 +36,61 @@ public class HomeFrame extends javax.swing.JFrame {
         jButton1.setBackground(new java.awt.Color(237, 226, 219));
         jButton1.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
         jButton1.setText("View Orders");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 470, 280, 40));
 
         jButton2.setBackground(new java.awt.Color(237, 226, 219));
         jButton2.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
         jButton2.setText("Statistics");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 540, 280, 40));
 
         jButton3.setBackground(new java.awt.Color(237, 226, 219));
         jButton3.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
         jButton3.setText("Add Product");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 170, 280, 40));
 
         jButton4.setBackground(new java.awt.Color(237, 226, 219));
         jButton4.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
         jButton4.setText("Manage Products");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 250, 280, 40));
 
         jButton5.setBackground(new java.awt.Color(237, 226, 219));
         jButton5.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
         jButton5.setText("All Products");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 320, 280, 40));
 
         jButton6.setBackground(new java.awt.Color(237, 226, 219));
         jButton6.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
         jButton6.setText("Order");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 400, 280, 40));
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
@@ -96,37 +132,56 @@ public class HomeFrame extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        new AddProductFrame().setVisible(true);
+//        dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        new ManageProductsFrame().setVisible(true);
+//        dispose();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        new AllProductsFrame().setVisible(true);
+//        dispose();
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        new OrderFrame().setVisible(true);
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        new ViewOrdersFrame().setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        new StatisticsFrame().setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void setDateTime() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage());
+                    }
+                    Date date = new Date();
+                    SimpleDateFormat tf = new SimpleDateFormat("h:mm:ss aa", Locale.ENGLISH);
+                    SimpleDateFormat df = new SimpleDateFormat("EEEE, yyyy-MM-dd", Locale.ENGLISH);
+                    String time = tf.format(date);
+                    jLabel3.setText(time.split(" ")[0]);
+                    jLabel4.setText(time.split(" ")[1]);
+                    jLabel5.setText(df.format(date));
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(HomeFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(HomeFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(HomeFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(HomeFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new HomeFrame().setVisible(true);
-            }
-        });
+        }).start();
     }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
